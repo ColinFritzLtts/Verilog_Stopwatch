@@ -48,8 +48,8 @@ module rtc_adapter(
     always @ (posedge i_sclk)
     begin : FSM
         if(i_reset_n == 1'b0) begin
-            intstate <= FRM6;
-            intstatenext <= FRM1;
+            intstate <= FRM1;
+            intstatenext <= FRM2;
         end else              begin
             intstate <= #1 intstatenext;
             case(intstatenext)
