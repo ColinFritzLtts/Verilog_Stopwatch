@@ -188,7 +188,7 @@ rtc_trigger TDC(
         end else begin
             $display("\tFAIL: nxtState_t changed to early");
         end
-        //TDC_FSM_01_3
+        //TDC_FSM_01_2
         $display("[TDC_FSM_01_3] The module shall set nxtState_t to COUNTING when triggerDB is set to logic high and curState_t is IDLE.");
         @(TDC.triggerDB == 1) #1 if (TDC.nxtState_t == COUNTING) begin
             $display("\tPASS: nxtState_t = COUNTING");
@@ -203,7 +203,7 @@ rtc_trigger TDC(
         TDC.nxtState_t = PAUSE;
         
         i_trigger = #1 1;
-        //TDC_FSM_01_2
+        //TDC_FSM_01_3
         $display("[TDC_FSM_01_2] The module shall not set nxtState_t to COUNTING when triggerDB is set to logic low and curState_t is PAUSE.");
         @(TDC.countDB == 999999) if(TDC.nxtState_t == PAUSE) begin
             $display("\tPASS: nxtState_t was unchanged.");
