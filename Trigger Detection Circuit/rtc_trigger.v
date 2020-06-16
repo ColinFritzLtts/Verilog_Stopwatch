@@ -15,7 +15,7 @@ module rtc_trigger(
     output reg o_latch_count    //Output control signal
     );
 //--------------------------------------------------------------------------------
-    parameter BOUND = 5;           //Used to set the Debounce time
+    parameter BOUND = 1000000;           //Used to set the Debounce time
     
     parameter [1:0] IDLE     = 2'b00;    //
     parameter [1:0] COUNTING = 2'b01;    //States as parameters
