@@ -11,7 +11,7 @@
 // Tool Versions: Vivado 2019.2
 // Description: A FPGA adapter for the common cathode 7-segment array.
 // 
-// Dependencies: rtc_displaydriver, rtc_stopwatch
+// Dependencies: rtc_displaydriver, rtc_stopwatch, rtc_adapter_clk
 // 
 // Revision:
 // Revision 0.01 - File Created
@@ -32,6 +32,12 @@ module rtc_adapter(
     output reg  [7:0] o_segments = 8'hFF,
     output reg  [7:0] o_digits   = 8'hFF
 );
+    reg intclk;
+    rtc_adapter_clk CLK_DIV(
+        .i_sclk    (i_sclk   ),
+        .i_reset_n (i_reset_n),
+        .o_intclk  (intclk )
+    );
     //-------------Internal Constants--------------------------
      parameter SIZE = 6;
      parameter FRM1 = 6'b000001, 
@@ -45,11 +51,11 @@ module rtc_adapter(
      reg  [SIZE-1:0] intstate     = FRM6;// combo part of FSM
     
     //--------------FSM process----------------------------------
-    always @ (posedge i_sclk)
+    always @ (posedge intclk or negedge i_reset_n)
     begin : FSM
         if(i_reset_n == 1'b0) begin
-            intstate <= FRM6;
-            intstatenext <= FRM1;
+            intstate <= FRM1;
+            intstatenext <= FRM2;
         end else              begin
             intstate <= #1 intstatenext;
             case(intstatenext)
@@ -64,41 +70,43 @@ module rtc_adapter(
         end
     end
      
-    always @ (posedge i_sclk)
-    if(i_reset_n == 1'b0) begin
-        o_segments <= 8'b00000000;
-        o_digits   <= 8'b00000000;
-    end 
-    else begin
-        case(intstate)
-            FRM1:    begin
-                         o_digits   <= i_segout1;
-                         o_segments <= 8'b11111110;
-                     end
-            FRM2:    begin
-                         o_digits   <= i_segout2;
-                         o_segments <= 8'b11111101;
-                     end
-            FRM3:    begin
-                         o_digits   <= i_segout3;
-                         o_segments <= 8'b11111011;
-                     end
-            FRM4:    begin
-                         o_digits   <= i_segout4;
-                         o_segments <= 8'b11110111;
-                     end
-            FRM5:    begin
-                         o_digits   <= i_segout5;
-                         o_segments <= 8'b11101111;
-                     end
-            FRM6:    begin
-                         o_digits   <= i_segout6;
-                         o_segments <= 8'b11011111;
-                     end
-            default: begin
-                         o_digits   <= 8'b11111111;
-                         o_segments <= 8'b11111111;
-                     end
-        endcase
+    always @ (posedge intclk or negedge i_reset_n)
+    begin: SEG_OUT
+        if(i_reset_n == 1'b0) begin
+            o_segments <= 8'b00000000;
+            o_digits   <= 8'b00000000;
+        end 
+        else begin
+            case(intstate)
+                FRM1:    begin
+                             o_digits   <= i_segout1;
+                             o_segments <= 8'b11111110;
+                         end
+                FRM2:    begin
+                             o_digits   <= i_segout2;
+                             o_segments <= 8'b11111101;
+                         end
+                FRM3:    begin
+                             o_digits   <= i_segout3;
+                             o_segments <= 8'b11111011;
+                         end
+                FRM4:    begin
+                             o_digits   <= i_segout4;
+                             o_segments <= 8'b11110111;
+                         end
+                FRM5:    begin
+                             o_digits   <= i_segout5;
+                             o_segments <= 8'b11101111;
+                         end
+                FRM6:    begin
+                             o_digits   <= i_segout6;
+                             o_segments <= 8'b11011111;
+                         end
+                default: begin
+                             o_digits   <= 8'b11111111;
+                             o_segments <= 8'b11111111;
+                         end
+            endcase
+        end
     end
 endmodule
