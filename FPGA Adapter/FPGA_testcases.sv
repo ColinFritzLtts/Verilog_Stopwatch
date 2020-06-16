@@ -54,7 +54,7 @@ module FPGA_testcases;
                FRM6 = 6'b100000;
     initial begin
         i_sclk = 0; 
-        i_reset_n = 0; 
+        i_reset_n = 1; 
         i_segout1 = 8'h11;
         i_segout2 = 8'h22;
         i_segout3 = 8'h33;
@@ -85,7 +85,6 @@ module FPGA_testcases;
     
   //Rest of testbench code after this line 
   initial begin
-  
     //FPGA_INIT_01_01
     $display("[FPGA_INIT_01_01] The module shall preset o_segments to '11111111' upon system startup.");
     #1 assert (o_segments == 8'hFF) 
@@ -117,16 +116,16 @@ module FPGA_testcases;
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     //FPGA_DIV_01_01
-    $display("[FPGA_DIV_01_01] The module shall generate an internal clock signal intclk with period of 1ms based on clock division of i_sclk.");
+    @(posedge DUT1.intclk) $display("[FPGA_DIV_01_01] The module shall generate an internal clock signal intclk with period of 1ms based on clock division of i_sclk.");
     
-    #100000 $warning("Please check the period of the intclk to be 1ms");
+    @(posedge DUT1.intclk) $warning("Please check the period of the intclk to be 1ms");
     
     //FPGA_DIV_02_01
     i_reset_n = 0;
     i_reset_n = #10 1;
     $display("[FPGA_DIV_02_01] The module shall set intclk to a falling edge of the clock when i_reset_n is set to logic low.");
-    
-    #100000 $warning("Please check the phase of intclk.");
+    //clock initiates on negative edge, so we wait until next negedge
+    @(negedge DUT1.intclk) $warning("Please check the phase of intclk.");
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
@@ -143,6 +142,7 @@ module FPGA_testcases;
     i_reset_n = 0;
     i_reset_n = #10 1;
     $display("[FPGA_FSM_02_01] The module shall set intstate equal to intstatenext on rising edge of intclk. ");
+    @(posedge DUT1.intclk);
     #10 assert (DUT1.intstate == FRM2) 
         $display("PASS: intstate = %b", DUT1.intstate);
     else
