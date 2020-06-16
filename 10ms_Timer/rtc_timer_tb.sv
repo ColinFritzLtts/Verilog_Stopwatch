@@ -56,7 +56,8 @@ module rtc_timer_tb;
     initial begin
         #10 i_reset_n = 1;
         i_timerenb = 1;
-        // #50 i_timerenb = 0;
+        #50 i_timerenb = 0;
+        #70 i_timerenb = 1;
     end
     
     always 
