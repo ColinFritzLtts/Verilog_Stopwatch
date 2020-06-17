@@ -71,12 +71,12 @@ module rtc_adapter_tb;
   end 
     
   initial 
-  #100 $finish; 
+  #6500101 $finish; 
     
   //Rest of testbench code after this line 
   initial begin
-    i_reset_n = 1;
-    i_reset_n = #100 0;
+    i_reset_n = 0;
+    i_reset_n = #100 1;
   end
   
 endmodule
