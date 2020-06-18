@@ -60,7 +60,7 @@ module rtc_stopwatch(
     wire [23:0] count;
     
     // 24-bit BCD Counter
-    BCDcounter counter(
+    rtc_24bitcounter counter(
         .i_rtcclk(base_tick),
         .i_reset_n(reset_n),
         .i_countenb(count_enb),

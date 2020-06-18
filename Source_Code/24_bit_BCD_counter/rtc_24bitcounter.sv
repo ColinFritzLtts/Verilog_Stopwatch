@@ -1,11 +1,11 @@
-timescale 1ns / 1ps
+`timescale 1ns / 1ps
 
 /*
 input i_rtcclk produces a transition every 5milliseconds.  
 input i_countenb 
 */
 
-module BCDcounter(
+module rtc_24bitcounter(
     i_rtcclk, 
     i_countenb, 
     i_countinit,

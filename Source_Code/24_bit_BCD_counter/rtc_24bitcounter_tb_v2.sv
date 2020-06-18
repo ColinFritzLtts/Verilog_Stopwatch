@@ -1,4 +1,4 @@
-timescale 1ns / 1ps
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -20,12 +20,12 @@ timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module BCDCOUNTER_TESTBENCH();
+module rtc_24bitcounter_tb_v2();
 reg i_rtcclk, i_reset_n, i_latchcount, i_countinit,i_countenb;
 wire [23:0] o_count;
 integer ticks;
 
-BCDcounter dut(.i_reset_n(i_reset_n), .i_rtcclk(i_rtcclk), .i_latchcount(i_latchcount), .i_countinit(i_countinit), .i_countenb(i_countenb), 
+rtc_24bitcounter dut(.i_reset_n(i_reset_n), .i_rtcclk(i_rtcclk), .i_latchcount(i_latchcount), .i_countinit(i_countinit), .i_countenb(i_countenb), 
 .o_count(o_count));
 
 initial begin
