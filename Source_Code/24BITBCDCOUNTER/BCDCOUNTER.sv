@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+timescale 1ns / 1ps
 
 /*
 input i_rtcclk produces a transition every 5milliseconds.  
@@ -90,12 +90,12 @@ module BCDcounter(
 											end 
 										else 
 											begin 
-												Tens_of_Seconds<=4'b0001;
+												Tens_of_Seconds<=Tens_of_Seconds+4'b0001;
 											end 
 									end 
 								else 
 									begin 
-										Seconds<=4'b0001;
+										Seconds<=Seconds+4'b0001;
 									end 
 							end
 						else 
@@ -114,6 +114,7 @@ module BCDcounter(
 assign o_count = {Tens_Of_Minutes,Minutes,Tens_of_Seconds,Seconds, Hundreds_of_Milliseconds, Tens_Of_Milliseconds};
 assign rst = ~i_reset_n;
 endmodule
+
 
 
 
