@@ -83,23 +83,23 @@ module rtc_adapter(
                              o_segments <= 8'b11111110;
                          end
                 FRM2:    begin
-                             o_digits   <= i_segout2;
+                             o_digits   <= {1'b1, i_segout2[6:0]};
                              o_segments <= 8'b11111101;
                          end
                 FRM3:    begin
-                             o_digits   <= i_segout3;
+                             o_digits   <= {1'b0, i_segout3[6:0]};
                              o_segments <= 8'b11111011;
                          end
                 FRM4:    begin
-                             o_digits   <= i_segout4;
+                             o_digits   <= {1'b1, i_segout4[6:0]};
                              o_segments <= 8'b11110111;
                          end
                 FRM5:    begin
-                             o_digits   <= i_segout5;
+                             o_digits   <= {1'b0, i_segout5[6:0]};
                              o_segments <= 8'b11101111;
                          end
                 FRM6:    begin
-                             o_digits   <= i_segout6;
+                             o_digits   <= {1'b1, i_segout6[6:0]};
                              o_segments <= 8'b11011111;
                          end
                 default: begin
